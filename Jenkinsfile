@@ -26,7 +26,7 @@ pipeline {
 //                     }
 //                 final scmVars = checkout(scm)
 //             }
-            final scmVars = checkout(scm)
+            checkout(scm)
             TAGS = "${checkout(scm).GIT_COMMIT}"
         }
         stage('Clean and Compile Project') {
