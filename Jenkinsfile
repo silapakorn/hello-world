@@ -10,6 +10,7 @@ pipeline {
             REGISTRY_CREDENTIAL = 'central_login_for_dockerhub'
             CHART_REPO_URL = "http://35.184.252.55/chartrepo"
             CHART_REPO_NAME = "developers-private-project"
+            NAMESPACE = "supplier-connect-dev"
             EXPOSE_PORT= "8080"
             VAULT_ADDRESS="192.168.19.84"
             VAULT_PORT="8200"
@@ -90,13 +91,13 @@ pipeline {
                     sh '''
                         helm install ${REPOSITORY} \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
-                        --ca-file=ca.crt -n supplier-connect-dev \
+                        --ca-file=ca.crt -n ${NAMESPACE} \
                         || exit 0
                     '''
                     sh '''
-                        helm upgrade ${REPOSITORY} \
+                        helm upgrade ${REPOSITORY} --wait --recreate-pods \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
-                        --ca-file=ca.crt -n supplier-connect-dev
+                        --ca-file=ca.crt -n ${NAMESPACE}
                     '''
                 }
             }
