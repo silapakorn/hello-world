@@ -41,13 +41,20 @@ pipeline {
             }
         }
         stage('Build Docker Images') {
-            steps {
-                echo "${DOCKER_REPOSITORY}:${TAGS}"
-                script {
-                   sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
-                   sh 'docker images'
-                }
+            dir("${env.WORKSPACE}"){
+                docker.build("${DOCKER_REPOSITORY}:${TAGS}")
             }
+
+//             docker.withRegistry("${ECRLink}", 'ecr:ap-southeast-2:helloworld-ecr'){
+//                 docker.image("${ImageName}").push("${ImageTag}")
+//             }
+//             steps {
+//                 echo "${DOCKER_REPOSITORY}:${TAGS}"
+//                 script {
+//                    sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
+//                    sh 'docker images'
+//                 }
+//             }
         }
         stage('Push Docker Image') {
             steps{
