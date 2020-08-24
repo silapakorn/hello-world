@@ -44,10 +44,10 @@ pipeline {
 //             }
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
-//                 script {
-//                    sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
-//                    sh 'docker images'
-//                 }
+                script {
+                   sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
+                   sh 'docker images'
+                }
             }
         }
         stage('Push Docker Image') {
