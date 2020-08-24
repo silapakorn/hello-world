@@ -44,9 +44,8 @@ pipeline {
 //             }
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
-                script {
-                   sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
-                   sh 'docker images'
+                dir("${env.WORKSPACE}"){
+                    docker.build("${REPOSITORY}:latest")
                 }
             }
         }
