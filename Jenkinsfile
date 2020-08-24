@@ -46,14 +46,14 @@ pipeline {
 //                 docker.image("${ImageName}").push("${ImageTag}")
 //             }
             steps {
-//                 echo "${DOCKER_REPOSITORY}:${TAGS}"
-//                 script {
-//                    sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
-//                    sh 'docker images'
-//                 }
-                dir("${env.WORKSPACE}"){
-                    docker.build("${DOCKER_REPOSITORY}:${TAGS}")
+                echo "${DOCKER_REPOSITORY}:${TAGS}"
+                script {
+                   sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
+                   sh 'docker images'
                 }
+//                 dir("${env.WORKSPACE}"){
+//                     docker.build("${DOCKER_REPOSITORY}:${TAGS}")
+//                 }
             }
         }
         stage('Push Docker Image') {
