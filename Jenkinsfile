@@ -54,7 +54,8 @@ pipeline {
 //                 }
                 script {
                     dir("${env.WORKSPACE}"){
-                        docker.build("${DOCKER_REPOSITORY}:${TAGS}")
+//                         docker.build("${DOCKER_REPOSITORY}:${TAGS}")
+                        docker.image("${REPOSITORY}").push("${TAGS}")
                     }
                 }
 //                 dir("${env.WORKSPACE}"){
