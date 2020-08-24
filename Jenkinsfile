@@ -21,11 +21,12 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
-//                     script {
+                    script {
 //                         TAGS = getTag()
-//                     }
+                        TAGS = "${checkout(scm).GIT_COMMIT}"
+                    }
 //                 final scmVars = checkout(scm)
-                TAGS = "${checkout(scm).GIT_COMMIT}"
+//                 TAGS = "${checkout(scm).GIT_COMMIT}"
             }
         }
         stage('Clean and Compile Project') {
