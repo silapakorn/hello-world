@@ -52,12 +52,12 @@ pipeline {
 //                    sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
 //                    sh 'docker images'
 //                 }
-                script {
-                    dir("${env.WORKSPACE}"){
-//                         docker.build("${DOCKER_REPOSITORY}:${TAGS}")
-                        docker.image("${REPOSITORY}").push("${TAGS}")
-                    }
-                }
+//                 script {
+//                     dir("${env.WORKSPACE}"){
+// //                         docker.build("${DOCKER_REPOSITORY}:${TAGS}")
+//                         docker.image("${REPOSITORY}").push("${TAGS}")
+//                     }
+//                 }
 //                 dir("${env.WORKSPACE}"){
 //                     docker.build("${DOCKER_REPOSITORY}:${TAGS}")
 //                 }
@@ -65,12 +65,12 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps{
-                script {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                         docker.withRegistry( '', REGISTRY_CREDENTIAL ){
-                            sh "docker push ${DOCKER_REPOSITORY}:${TAGS}"
-                         }
-                    }
+//                 script {
+//                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+//                          docker.withRegistry( '', REGISTRY_CREDENTIAL ){
+//                             sh "docker push ${DOCKER_REPOSITORY}:${TAGS}"
+//                          }
+//                     }
                 }
             }
         }
