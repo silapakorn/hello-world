@@ -18,14 +18,15 @@ pipeline {
         }
     stages {
         stage('Poll scm') {
-            steps {
-                deleteDir()
-                checkout scm
-                    script {
-                        TAGS = getTag()
-                    }
+//             steps {
+//                 deleteDir()
+//                 checkout scm
+//                     script {
+//                         TAGS = getTag()
+//                     }
 //                 final scmVars = checkout(scm)
-            }
+//             }
+            final scmVars = checkout(scm)
             TAGS = "${checkout(scm).GIT_COMMIT}"
         }
         stage('Clean and Compile Project') {
