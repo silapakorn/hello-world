@@ -21,9 +21,9 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
-                    script {
-                        TAGS = getTag()
-                    }
+//                     script {
+//                         TAGS = getTag()
+//                     }
 //                 final scmVars = checkout(scm)
 //                 TAGS = "${checkout(scm).GIT_COMMIT}"
             }
