@@ -65,6 +65,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps{
+                echo ' push docker image'
 //                 script {
 //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
 //                          docker.withRegistry( '', REGISTRY_CREDENTIAL ){
@@ -72,6 +73,34 @@ pipeline {
 //                          }
 //                     }
 //                 }
+            }
+        }
+
+        stage('Deploy kubernetes') {
+            steps{
+                withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
+                    // some block
+                    sh 'ls -l /usr/share/jenkins/'
+                    sh '''
+                        helm repo add developers-private-project \
+                        --ca-file=/usr/share/jenkins/ca.crt \
+                        --username=admin \
+                        --password=admin http://35.184.252.55/chartrepo/developers-private-project
+                    '''
+                    sh 'helm repo update'
+                    // sh 'kubectl get all -n supplier-connect-dev'
+                    sh '''
+                        helm install dev-to-do-chart \
+                        developers-private-project/dev-to-do-chart \
+                        --ca-file=ca.crt -n supplier-connect-dev \
+                        || exit 0
+                    '''
+                    sh '''
+                        helm upgrade dev-to-do-chart \
+                        developers-private-project/dev-to-do-chart \
+                        --ca-file=ca.crt -n supplier-connect-dev
+                    '''
+                }
             }
         }
     }
