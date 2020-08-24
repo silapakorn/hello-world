@@ -71,7 +71,7 @@ pipeline {
 //                             sh "docker push ${DOCKER_REPOSITORY}:${TAGS}"
 //                          }
 //                     }
-                }
+//                 }
             }
         }
     }
