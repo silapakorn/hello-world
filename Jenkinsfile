@@ -46,7 +46,7 @@ pipeline {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
                 dir("${env.WORKSPACE}"){
                     script {
-                        docker.build("${REPOSITORY}:latest")
+                        docker.build("${DOCKER_REPOSITORY}:latest")
                     }
                 }
             }
@@ -54,13 +54,16 @@ pipeline {
         stage('Push Docker Image') {
             steps{
                 echo ' push docker image'
-//                 script {
+                script {
+                    docker.withRegistry('', REGISTRY_CREDENTIAL){
+                        docker.image("${ImageName}").push("${ImageTag}")
+                    }
 //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
 //                          docker.withRegistry( '', REGISTRY_CREDENTIAL ){
 //                             sh "docker push ${DOCKER_REPOSITORY}:${TAGS}"
 //                          }
 //                     }
-//                 }
+                }
             }
         }
 
