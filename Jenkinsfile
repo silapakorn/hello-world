@@ -25,8 +25,8 @@ pipeline {
                         TAGS = getTag()
                     }
 //                 final scmVars = checkout(scm)
-                TAGS = "${checkout(scm).GIT_COMMIT}"
-                }
+            }
+            TAGS = "${checkout(scm).GIT_COMMIT}"
         }
         stage('Clean and Compile Project') {
             steps {
