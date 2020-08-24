@@ -45,7 +45,9 @@ pipeline {
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
                 dir("${env.WORKSPACE}"){
-                    docker.build("${REPOSITORY}:latest")
+                    script {
+                        docker.build("${REPOSITORY}:latest")
+                    }
                 }
             }
         }
