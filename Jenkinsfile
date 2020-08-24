@@ -6,11 +6,10 @@ pipeline {
             DOCKER_REPOSITORY = 'ascendcorp/hello-world'
             REPOSITORY = 'hello-world'
             TAGS = "latest"
-            REPOSITORY_TAGS =" ${DOCKER_REPOSITORY}:${TAGS}"
+            REPOSITORY_TAGS = " ${DOCKER_REPOSITORY}:${TAGS}"
             REGISTRY_CREDENTIAL = 'central_login_for_dockerhub'
-            SERVER_DEPLOY_DEV = "centos@192.168.19.87"
-            SERVER_DEPLOY_STG= "centos@192.168.19.93"
-            SERVER_DEPLOY_UAT= "centos@192.168.19.102"
+            CHART_REPO_URL = "http://35.184.252.55/chartrepo"
+            CHART_REPO_NAME = "developers-private-project"
             EXPOSE_PORT= "8080"
             VAULT_ADDRESS="192.168.19.84"
             VAULT_PORT="8200"
@@ -82,22 +81,21 @@ pipeline {
                     // some block
                     sh 'ls -l /usr/share/jenkins/'
                     sh '''
-                        helm repo add developers-private-project \
+                        helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
                         --username=admin \
-                        --password=admin http://35.184.252.55/chartrepo/developers-private-project
+                        --password=admin ${CHART_REPO_URL}/${CHART_REPO_NAME}
                     '''
                     sh 'helm repo update'
-                    // sh 'kubectl get all -n supplier-connect-dev'
                     sh '''
-                        helm install dev-to-do-chart \
-                        developers-private-project/dev-to-do-chart \
+                        helm install ${REPOSITORY} \
+                        ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n supplier-connect-dev \
                         || exit 0
                     '''
                     sh '''
-                        helm upgrade dev-to-do-chart \
-                        developers-private-project/dev-to-do-chart \
+                        helm upgrade ${REPOSITORY} \
+                        ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n supplier-connect-dev
                     '''
                 }
