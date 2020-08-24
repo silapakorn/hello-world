@@ -20,9 +20,13 @@ pipeline {
         stage('Poll scm') {
             steps {
                 deleteDir()
-                final scmVars = checkout(scm)
+                checkout scm
+                    script {
+                        TAGS = getTag()
+                    }
+//                 final scmVars = checkout(scm)
                 TAGS = "${checkout(scm).GIT_COMMIT}"
-            }
+                }
         }
         stage('Clean and Compile Project') {
             steps {
