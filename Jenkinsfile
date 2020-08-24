@@ -21,12 +21,9 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
-                    script {
-//                         TAGS = getTag()
-                        TAGS = "${checkout(scm).GIT_COMMIT}"
-                    }
-//                 final scmVars = checkout(scm)
-//                 TAGS = "${checkout(scm).GIT_COMMIT}"
+                script {
+                    TAGS = "${checkout(scm).GIT_COMMIT}"
+                }
             }
         }
         stage('Clean and Compile Project') {
@@ -42,7 +39,6 @@ pipeline {
             }
         }
         stage('Build Docker Images') {
-
 //             docker.withRegistry("${ECRLink}", 'ecr:ap-southeast-2:helloworld-ecr'){
 //                 docker.image("${ImageName}").push("${ImageTag}")
 //             }
@@ -51,15 +47,6 @@ pipeline {
 //                 script {
 //                    sh "docker build  -t ${DOCKER_REPOSITORY}:${TAGS}  -f Dockerfile ."
 //                    sh 'docker images'
-//                 }
-//                 script {
-//                     dir("${env.WORKSPACE}"){
-// //                         docker.build("${DOCKER_REPOSITORY}:${TAGS}")
-//                         docker.image("${REPOSITORY}").push("${TAGS}")
-//                     }
-//                 }
-//                 dir("${env.WORKSPACE}"){
-//                     docker.build("${DOCKER_REPOSITORY}:${TAGS}")
 //                 }
             }
         }
@@ -79,7 +66,6 @@ pipeline {
         stage('Deploy kubernetes') {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
-                    // some block
                     sh 'ls -l /usr/share/jenkins/'
                     sh '''
                         helm repo add ${CHART_REPO_NAME} \
