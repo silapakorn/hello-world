@@ -41,7 +41,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
-                sh "docker images | grep ${DOCKER_REPOSITORY} | awk '{print $1 : $2}' | xargs docker rmi"
+                sh "docker images | grep ${DOCKER_REPOSITORY} | awk '{print \$1 : \$2}' | xargs docker rmi"
 
                 dir("${env.WORKSPACE}"){
                     script {
