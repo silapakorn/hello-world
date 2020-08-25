@@ -13,6 +13,7 @@ pipeline {
         VAULT_ADDRESS="192.168.19.84"
         VAULT_PORT="8200"
         EXECUTE_USER=""
+        TAGS2 = "latest2"
     }
     stages {
         stage('Poll scm') {
@@ -21,6 +22,7 @@ pipeline {
                 checkout scm
                 script {
                     TAGS = "${checkout(scm).GIT_COMMIT}"
+                    TAGS2 = "${checkout(scm).GIT_COMMIT}"
                 }
             }
         }
@@ -61,21 +63,21 @@ pipeline {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
                     sh " echo ${DOCKER_REPOSITORY}:${TAGS}"
-                    sh '''
+                    sh ''' echo ${TAGS2}:${TAGS}
                         helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
                         --username=admin \
                         --password=admin ${CHART_REPO_URL}/${CHART_REPO_NAME}
                     '''
                     sh 'helm repo update'
-                    sh '''
+                    sh ''' echo ${TAGS2}:${TAGS}
                         helm install ${REPOSITORY} \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
                         --set image.tag=${TAGS} \
                         || exit 0
                     '''
-                    sh ''' echo ${DOCKER_REPOSITORY}:${TAGS}
+                    sh ''' echo ${TAGS2}:${TAGS}
                         helm upgrade ${REPOSITORY} --wait --recreate-pods \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
