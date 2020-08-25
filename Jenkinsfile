@@ -72,14 +72,14 @@ pipeline {
                         helm install ${REPOSITORY} \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
-                        --set image.tag= ${TAGS} \
+                        --set image.tag=${TAGS} \
                         || exit 0
                     '''
                     sh '''
                         helm upgrade ${REPOSITORY} --wait --recreate-pods \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
-                        --set image.tag= ${TAGS}
+                        --set image.tag=${TAGS}
                     '''
                 }
             }
