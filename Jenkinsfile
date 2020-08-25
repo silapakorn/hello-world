@@ -68,7 +68,7 @@ pipeline {
         stage('Deploy kubernetes') {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
-                    sh 'ls -l /usr/share/jenkins/'
+                    echo "${DOCKER_REPOSITORY}:${TAGS}"
                     sh '''
                         helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
