@@ -27,20 +27,16 @@ pipeline {
         stage('Clean and Compile Project') {
             steps {
                 sh 'java -version'
-//                 sh 'mvn clean'
-//                 sh 'mvn compile'
+                sh 'mvn clean'
+                sh 'mvn compile'
             }
         }
         stage('Build JAR file') {
             steps {
-                echo "Build JAR file"
-//                 sh 'mvn package'
+                sh 'mvn package'
             }
         }
         stage('Build Docker Images') {
-//             docker.withRegistry("${ECRLink}", 'ecr:ap-southeast-2:helloworld-ecr'){
-//                 docker.image("${ImageName}").push("${ImageTag}")
-//             }
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
                 dir("${env.WORKSPACE}"){
