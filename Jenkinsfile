@@ -41,6 +41,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 echo "${DOCKER_REPOSITORY}:${TAGS}"
+                sh "docker images | grep ${DOCKER_REPOSITORY} | awk '{print $1 ":" $2}' | xargs docker rmi"
                 dir("${env.WORKSPACE}"){
                     script {
                         docker.build("${DOCKER_REPOSITORY}:latest")
@@ -62,22 +63,21 @@ pipeline {
         stage('Deploy kubernetes') {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
-                    sh " echo ${DOCKER_REPOSITORY}:${TAGS}"
-                    sh """ echo ${TAGS2}:${TAGS}
+                    sh """
                         helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
                         --username=admin \
                         --password=admin ${CHART_REPO_URL}/${CHART_REPO_NAME}
                     """
                     sh 'helm repo update'
-                    sh """ echo ${TAGS2}:${TAGS}
+                    sh """
                         helm install ${REPOSITORY} \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
                         --set image.tag=${TAGS} \
                         || exit 0
                     """
-                    sh """ echo ${TAGS2}:${TAGS}
+                    sh """
                         helm upgrade ${REPOSITORY} --wait --recreate-pods \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
