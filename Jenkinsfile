@@ -53,7 +53,7 @@ pipeline {
             steps{
                 echo ' push docker image'
                 script {
-                    docker.withRegistry('192.168.19.15:8082', REGISTRY_CREDENTIAL){
+                    docker.withRegistry('http://192.168.19.15:8082', REGISTRY_CREDENTIAL){
                         docker.image("${ImageName}").push("${ImageTag}")
                     }
 //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
