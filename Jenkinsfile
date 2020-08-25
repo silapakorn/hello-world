@@ -77,7 +77,7 @@ pipeline {
                         --set image.tag=${TAGS} \
                         || exit 0
                     """
-                    sh ''' echo ${TAGS2}:${TAGS}
+                    sh """ echo ${TAGS2}:${TAGS}
                         helm upgrade ${REPOSITORY} --wait --recreate-pods \
                         ${CHART_REPO_NAME}/${REPOSITORY} \
                         --ca-file=ca.crt -n ${NAMESPACE} \
