@@ -63,12 +63,12 @@ pipeline {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
                     sh " echo ${DOCKER_REPOSITORY}:${TAGS}"
-                    sh ''' echo ${TAGS2}:${TAGS}
+                    sh " echo ${TAGS2}:${TAGS}
                         helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
                         --username=admin \
                         --password=admin ${CHART_REPO_URL}/${CHART_REPO_NAME}
-                    '''
+                    "
                     sh 'helm repo update'
                     sh ''' echo ${TAGS2}:${TAGS}
                         helm install ${REPOSITORY} \
