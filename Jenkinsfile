@@ -1,21 +1,19 @@
 pipeline {
-
     agent any
-
-     environment {
-            DOCKER_REPOSITORY = 'ascendcorp/hello-world'
-            REPOSITORY = 'hello-world'
-            TAGS = "latest"
-            REPOSITORY_TAGS = " ${DOCKER_REPOSITORY}:${TAGS}"
-            REGISTRY_CREDENTIAL = 'central_login_for_dockerhub'
-            CHART_REPO_URL = "http://35.184.252.55/chartrepo"
-            CHART_REPO_NAME = "developers-private-project"
-            NAMESPACE = "supplier-connect-dev"
-            EXPOSE_PORT= "8080"
-            VAULT_ADDRESS="192.168.19.84"
-            VAULT_PORT="8200"
-            EXECUTE_USER=""
-        }
+    environment {
+        DOCKER_REPOSITORY = 'ascendcorp/hello-world'
+        REPOSITORY = 'hello-world'
+        TAGS = "latest"
+        REPOSITORY_TAGS = " ${DOCKER_REPOSITORY}:${TAGS}"
+        REGISTRY_CREDENTIAL = 'central_login_for_dockerhub'
+        CHART_REPO_URL = "http://35.184.252.55/chartrepo"
+        CHART_REPO_NAME = "developers-private-project"
+        NAMESPACE = "supplier-connect-dev"
+        EXPOSE_PORT= "8080"
+        VAULT_ADDRESS="192.168.19.84"
+        VAULT_PORT="8200"
+        EXECUTE_USER=""
+    }
     stages {
         stage('Poll scm') {
             steps {
@@ -55,7 +53,7 @@ pipeline {
             steps{
                 echo ' push docker image'
                 script {
-                    docker.withRegistry('', REGISTRY_CREDENTIAL){
+                    docker.withRegistry('192.168.19.15:8082', REGISTRY_CREDENTIAL){
                         docker.image("${ImageName}").push("${ImageTag}")
                     }
 //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
