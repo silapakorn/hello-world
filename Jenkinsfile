@@ -27,13 +27,14 @@ pipeline {
         stage('Clean and Compile Project') {
             steps {
                 sh 'java -version'
-                sh 'mvn clean'
-                sh 'mvn compile'
+//                 sh 'mvn clean'
+//                 sh 'mvn compile'
             }
         }
         stage('Build JAR file') {
             steps {
-                sh 'mvn package'
+                echo "Build JAR file"
+//                 sh 'mvn package'
             }
         }
         stage('Build Docker Images') {
@@ -56,11 +57,6 @@ pipeline {
                     docker.withRegistry('http://192.168.19.15:8082', REGISTRY_CREDENTIAL){
                         docker.image("${DOCKER_REPOSITORY}").push("${TAGS}")
                     }
-//                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-//                          docker.withRegistry( '', REGISTRY_CREDENTIAL ){
-//                             sh "docker push ${DOCKER_REPOSITORY}:${TAGS}"
-//                          }
-//                     }
                 }
             }
         }
@@ -68,7 +64,7 @@ pipeline {
         stage('Deploy kubernetes') {
             steps{
                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig_dev', variable: 'KUBECONFIG')]) {
-                    echo "${DOCKER_REPOSITORY}:${TAGS}"
+                    sh " echo ${DOCKER_REPOSITORY}:${TAGS}"
                     sh '''
                         helm repo add ${CHART_REPO_NAME} \
                         --ca-file=/usr/share/jenkins/ca.crt \
