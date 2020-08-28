@@ -30,7 +30,7 @@ pipeline {
             steps {
                 sh 'java -version'
                 sh 'mvn clean'
-                sh 'mvn compile'
+//                 sh 'mvn compile'
             }
         }
         stage('Build JAR file') {
