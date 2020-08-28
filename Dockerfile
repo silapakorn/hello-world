@@ -1,5 +1,7 @@
 # Start with a base image containing Java runtime
-FROM adoptopenjdk:11-jre-hotspot
+FROM openjdk:11.0.8-jre
+
+ENV TZ="Asia/Bangkok"
 
 # Add a volume pointing to /tmp
 VOLUME /tmp
