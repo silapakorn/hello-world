@@ -5,7 +5,7 @@ pipeline {
         REPOSITORY = 'hello-world'
         TAGS = "latest"
         REPOSITORY_TAGS = " ${DOCKER_REPOSITORY}:${TAGS}"
-        REGISTRY_CREDENTIAL = 'central_login_for_dockerhub'
+        REGISTRY_CREDENTIAL = 'login_for_nexus_repository_docker'
         CHART_REPO_URL = "http://35.184.252.55/chartrepo"
         CHART_REPO_NAME = "developers-private-project"
         NAMESPACE = "supplier-connect-dev"
