@@ -29,6 +29,7 @@ pipeline {
         stage('Clean and Compile Project') {
             steps {
                 sh 'java -version'
+                sh 'mvn -v'
                 sh 'mvn clean'
                 sh 'mvn compile'
             }
